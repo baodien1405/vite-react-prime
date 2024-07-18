@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "primereact/button";
-import z from "zod";
 import { AutoCompleteCompleteEvent } from "primereact/autocomplete";
+import { Button } from "primereact/button";
+import { useForm } from "react-hook-form";
 
 import {
   AutoCompleteField,
@@ -16,19 +16,15 @@ import {
   PasswordField,
   RadioGroupField,
 } from "@/components";
-import { useState } from "react";
-
-interface Option {
-  name: string;
-  code: string;
-}
+import { useGeneralSchema } from "@/hooks";
+import { CITY_OPTION_LIST, GENDER_OPTION_LIST } from "@/constants";
 
 interface GeneralPayload {
   fullName: string;
   email: string;
   password: string;
   amount: number;
-  city: Option;
+  city: string;
   description: string;
   country: string;
   categories: string[];
@@ -38,57 +34,8 @@ interface GeneralPayload {
 }
 
 export function GeneralForm() {
-  const schema = z.object({
-    fullName: z
-      .string({
-        required_error: "Please enter full name",
-      })
-      .trim()
-      .min(1, { message: "Please enter full name" }),
-    email: z.string().email({ message: "Please enter a valid email" }),
-    password: z
-      .string({
-        required_error: "Please enter full name",
-      })
-      .trim()
-      .min(1, { message: "Please enter full name" }),
-    amount: z.number(),
-    description: z.string(),
-    country: z.string(),
-    categories: z.array(z.string()),
-    gender: z.enum(["male", "female"]),
-    city: z
-      .object({
-        name: z.string(),
-        code: z.string(),
-      })
-      .nullable(),
-    fromDate: z.date(),
-    tradingOnline: z.boolean(),
-  });
-
-  const cities = [
-    { name: "New York", code: "NY" },
-    { name: "Rome", code: "RM" },
-    { name: "London", code: "LDN" },
-    { name: "Istanbul", code: "IST" },
-    { name: "Paris", code: "PRS" },
-  ];
-
-  const genderOptions = [
-    { label: "Male", value: "male" },
-    { label: "Female", value: "female" },
-  ];
-
-  const categoryOptions = [
-    { label: "Accounting", value: "A" },
-    { label: "Marketing", value: "M" },
-    { label: "Production", value: "P" },
-    { label: "Research", value: "R" },
-  ];
-
+  const schema = useGeneralSchema();
   const [countries, setCountries] = useState<string[]>([]);
-
   const {
     control,
     formState: { isSubmitting },
@@ -100,9 +47,9 @@ export function GeneralForm() {
       password: "",
       description: "",
       country: "",
+      city: "",
       categories: [],
       amount: 0,
-      city: undefined,
       fromDate: new Date(),
       tradingOnline: false,
     },
@@ -170,8 +117,8 @@ export function GeneralForm() {
         label="City"
         placeholder="Select a city"
         control={control}
-        options={cities}
-        optionLabel="name"
+        options={CITY_OPTION_LIST}
+        optionLabel="label"
         rootClassName="mb-2"
         highlightOnSelect={false}
         showClear
@@ -181,7 +128,7 @@ export function GeneralForm() {
         name="gender"
         label="Gender"
         control={control}
-        options={genderOptions}
+        options={GENDER_OPTION_LIST}
         rootClassName="mb-2"
       />
 
@@ -189,7 +136,7 @@ export function GeneralForm() {
         name="categories"
         label="Category"
         control={control}
-        options={categoryOptions}
+        options={CITY_OPTION_LIST}
         rootClassName="mb-2"
         direction="vertical"
       />
