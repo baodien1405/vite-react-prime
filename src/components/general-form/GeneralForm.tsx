@@ -39,9 +39,19 @@ interface GeneralPayload {
 
 export function GeneralForm() {
   const schema = z.object({
-    fullName: z.string().min(2),
-    email: z.string().email(),
-    password: z.string(),
+    fullName: z
+      .string({
+        required_error: "Please enter full name",
+      })
+      .trim()
+      .min(1, { message: "Please enter full name" }),
+    email: z.string().email({ message: "Please enter a valid email" }),
+    password: z
+      .string({
+        required_error: "Please enter full name",
+      })
+      .trim()
+      .min(1, { message: "Please enter full name" }),
     amount: z.number(),
     description: z.string(),
     country: z.string(),
