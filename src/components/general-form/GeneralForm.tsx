@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AutoCompleteCompleteEvent } from "primereact/autocomplete";
 import { Button } from "primereact/button";
@@ -39,6 +39,8 @@ export function GeneralForm() {
   const {
     control,
     formState: { isSubmitting },
+    watch,
+    setValue,
     handleSubmit,
   } = useForm<GeneralPayload>({
     defaultValues: {
@@ -55,6 +57,14 @@ export function GeneralForm() {
     },
     resolver: zodResolver(schema),
   });
+
+  const watchCity = watch("city");
+
+  useEffect(() => {
+    if (watchCity === "RM") {
+      setValue("amount", 100000);
+    }
+  }, [watchCity]);
 
   const handleGeneralSubmit = (formValues: GeneralPayload) => {
     console.log("🚀 ~ handleGeneralSubmit ~ formValues:", formValues);
