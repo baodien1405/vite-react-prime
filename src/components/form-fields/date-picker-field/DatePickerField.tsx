@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Control, FieldValues, Path, useController } from "react-hook-form";
 import { addLocale } from "primereact/api";
 import { Calendar, CalendarProps } from "primereact/calendar";
@@ -28,6 +29,7 @@ export function DatePickerField<T extends FieldValues>({
   inputClassName,
   ...rest
 }: DatePickerFieldProps<T>) {
+  const calendarRef = useRef<any>(null);
   const {
     field: { onBlur, onChange, value, ref },
     fieldState: { invalid, error },
@@ -46,6 +48,7 @@ export function DatePickerField<T extends FieldValues>({
 
       <IconField>
         <Calendar
+          ref={calendarRef}
           className="w-full h-12 rounded-lg"
           inputClassName={classNames("shadow-none", inputClassName)}
           name={name}
@@ -57,7 +60,10 @@ export function DatePickerField<T extends FieldValues>({
           {...rest}
         />
 
-        <InputIcon className="pi pi-calendar" />
+        <InputIcon
+          className="pi pi-calendar"
+          onClick={() => calendarRef.current?.show()}
+        />
       </IconField>
 
       {error?.message && (
