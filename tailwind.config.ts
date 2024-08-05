@@ -2,6 +2,8 @@
 
 export default {
   content: [
+    "./index.html",
+    "./node_modules/primereact/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
