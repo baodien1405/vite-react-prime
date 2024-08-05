@@ -33,7 +33,11 @@ interface GeneralPayload {
   tradingOnline: boolean;
 }
 
-export function GeneralForm() {
+interface GeneralFormProps {
+  onSubmit?: (payload: GeneralPayload) => void;
+}
+
+export function GeneralForm({ onSubmit }: GeneralFormProps) {
   const schema = useGeneralSchema();
   const [countries, setCountries] = useState<string[]>([]);
   const {
@@ -66,8 +70,8 @@ export function GeneralForm() {
     }
   }, [watchCity]);
 
-  const handleGeneralSubmit = (formValues: GeneralPayload) => {
-    console.log("🚀 ~ handleGeneralSubmit ~ formValues:", formValues);
+  const handleFormSubmit = async (payload: GeneralPayload) => {
+    await onSubmit?.(payload);
   };
 
   const handleSearchCountry = (event: AutoCompleteCompleteEvent) => {
@@ -75,7 +79,7 @@ export function GeneralForm() {
   };
 
   return (
-    <form noValidate onSubmit={handleSubmit(handleGeneralSubmit)}>
+    <form noValidate onSubmit={handleSubmit(handleFormSubmit)}>
       <InputTextField
         name="fullName"
         control={control}

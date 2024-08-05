@@ -31,6 +31,7 @@ export const useGeneralSchema = () => {
       tradingOnline: z.boolean(),
     })
     .superRefine((val, ctx) => {
+      console.log("🚀 ~ .superRefine ~ val:", val);
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Please specify a phone number",

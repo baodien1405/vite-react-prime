@@ -1,11 +1,14 @@
-import { NavLink } from "react-router-dom";
-
-import { InputIcon } from "primereact/inputicon";
+import { NavLink, useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 import { useContext, useState } from "react";
-
 import { PrimeReactContext } from "primereact/api";
+import { InputIcon } from "primereact/inputicon";
+import { classNames } from "primereact/utils";
+
+const cookies = new Cookies();
 
 export function Header() {
+  const navigate = useNavigate();
   const [mode, setMode] = useState("light");
   const { changeTheme } = useContext(PrimeReactContext);
 
@@ -35,20 +38,53 @@ export function Header() {
     }
   };
 
+  const handleLogout = () => {
+    cookies.remove("accessToken");
+    navigate("/admin/login");
+  };
+
   return (
     <div className="flex justify-between items-center px-20">
       <div className="flex gap-4 p-2">
-        <NavLink className="bg-red-200 p-2 rounded-md" to={"/"}>
+        <NavLink
+          className={({ isActive }) =>
+            classNames("bg-red-200 p-2 rounded-md", {
+              "bg-red-600 text-white": isActive,
+            })
+          }
+          to={"/"}
+        >
           Home
         </NavLink>
 
-        <NavLink className="bg-red-200 p-2 rounded-md" to={"/admin/login"}>
+        <NavLink
+          className={({ isActive }) =>
+            classNames("bg-red-200 p-2 rounded-md", {
+              "bg-red-600 text-white": isActive,
+            })
+          }
+          to={"/admin/login"}
+        >
           Login
         </NavLink>
 
-        <NavLink className="bg-red-200 p-2 rounded-md" to={"/admin/dashboard"}>
+        <NavLink
+          className={({ isActive }) =>
+            classNames("bg-red-200 p-2 rounded-md", {
+              "bg-red-600 text-white": isActive,
+            })
+          }
+          to={"/admin/dashboard"}
+        >
           Dashboard
         </NavLink>
+
+        <div
+          className="bg-red-200 p-2 rounded-md cursor-pointer"
+          onClick={handleLogout}
+        >
+          Logout
+        </div>
       </div>
 
       <div
