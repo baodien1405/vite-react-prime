@@ -49,7 +49,10 @@ export function InputTextField<T extends FieldValues>({
         invalid={invalid}
         value={value}
         ref={ref}
-        onChange={onChange}
+        onChange={(event) => {
+          onChange(event);
+          externalOnChange?.(event);
+        }}
         onBlur={onBlur}
         {...rest}
       />

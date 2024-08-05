@@ -57,7 +57,10 @@ export function RadioGroupField<T extends FieldValues>({
               inputId={option.value}
               name={name}
               value={option.value}
-              onChange={onChange}
+              onChange={(event) => {
+                onChange(event);
+                externalOnChange?.(event);
+              }}
               onBlur={onBlur}
               checked={option.value === value}
               invalid={invalid}

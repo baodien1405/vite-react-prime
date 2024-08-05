@@ -29,7 +29,7 @@ export function DatePickerField<T extends FieldValues>({
   inputClassName,
   ...rest
 }: DatePickerFieldProps<T>) {
-  const calendarRef = useRef<any>(null);
+  const calendarRef = useRef<Calendar>(null);
   const {
     field: { onBlur, onChange, value, ref },
     fieldState: { invalid, error },

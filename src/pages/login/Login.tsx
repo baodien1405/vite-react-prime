@@ -1,12 +1,12 @@
 import { Button } from "primereact/button";
-// import Cookies from "universal-cookie";
+import Cookies from "universal-cookie";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import { InputTextField, PasswordField } from "@/components";
 import { authAPI } from "@/api";
-import { useNavigate } from "react-router-dom";
 
-// const cookies = new Cookies();
+const cookies = new Cookies();
 
 interface LoginPayload {
   email: string;
@@ -14,7 +14,7 @@ interface LoginPayload {
 }
 
 export default function Login() {
-  // const accessToken = cookies.get("accessToken");
+  const accessToken = cookies.get("accessToken");
   const navigate = useNavigate();
   const {
     control,
@@ -31,11 +31,9 @@ export default function Login() {
     const response = await authAPI.login(payload);
 
     if (response.data.accessToken) {
-      // cookies.set("accessToken", response.data.accessToken, {
-      //   path: "/admin",
-      // });
-
-      document.cookie = `accessToken=${response.data.accessToken}; path=/admin`;
+      cookies.set("accessToken", response.data.accessToken, {
+        path: "/admin",
+      });
 
       navigate("/admin/dashboard");
     }
@@ -47,7 +45,7 @@ export default function Login() {
       onSubmit={handleSubmit(handleLogin)}
       className="w-[500px] p-20"
     >
-      {/* <div>accessToken:: {accessToken}</div> */}
+      <div>accessToken:: {accessToken}</div>
       <InputTextField
         name="email"
         control={control}
@@ -65,6 +63,7 @@ export default function Login() {
       <Button
         type="submit"
         disabled={isSubmitting}
+        loading={isSubmitting}
         label="Submit"
         className="w-full"
       />

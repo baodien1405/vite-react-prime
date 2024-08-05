@@ -42,7 +42,10 @@ export function InputSwitchField<T extends FieldValues>({
       <InputSwitch
         name={name}
         invalid={invalid}
-        onChange={onChange}
+        onChange={(event) => {
+          onChange(event);
+          externalOnChange?.(event);
+        }}
         onBlur={onBlur}
         inputRef={ref}
         {...rest}

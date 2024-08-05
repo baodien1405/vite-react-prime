@@ -50,7 +50,10 @@ export function InputTextareaField<T extends FieldValues>({
         invalid={invalid}
         value={value}
         ref={ref}
-        onChange={onChange}
+        onChange={(event) => {
+          onChange(event);
+          externalOnChange?.(event);
+        }}
         onBlur={onBlur}
         autoResize
         {...rest}

@@ -75,11 +75,7 @@ export function GeneralForm() {
   };
 
   return (
-    <form
-      noValidate
-      onSubmit={handleSubmit(handleGeneralSubmit)}
-      className="p-5"
-    >
+    <form noValidate onSubmit={handleSubmit(handleGeneralSubmit)}>
       <InputTextField
         name="fullName"
         control={control}
