@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AutoCompleteCompleteEvent } from "primereact/autocomplete";
 import { Button } from "primereact/button";
@@ -16,7 +16,7 @@ import {
   PasswordField,
   RadioGroupField,
 } from "@/components";
-import { useGeneralSchema } from "@/hooks";
+import { useGeneralSchema, useProvinceListQuery } from "@/hooks";
 import { CITY_OPTION_LIST, GENDER_OPTION_LIST } from "@/constants";
 
 interface GeneralPayload {
@@ -25,8 +25,12 @@ interface GeneralPayload {
   password: string;
   amount: number;
   city: string;
-  description: string;
   country: string;
+  province: string;
+  district: string;
+  ward: string;
+  address: string;
+  description: string;
   categories: string[];
   gender: "male" | "gender";
   fromDate: Date;
@@ -40,11 +44,17 @@ interface GeneralFormProps {
 export function GeneralForm({ onSubmit }: GeneralFormProps) {
   const schema = useGeneralSchema();
   const [countries, setCountries] = useState<string[]>([]);
+  const { data: provinceListData } = useProvinceListQuery();
+  const provinceOptions = (provinceListData?.data.data || []).map(
+    (province) => ({
+      label: province.name,
+      value: province.id,
+    })
+  );
+
   const {
     control,
     formState: { isSubmitting },
-    watch,
-    setValue,
     handleSubmit,
   } = useForm<GeneralPayload>({
     defaultValues: {
@@ -53,7 +63,11 @@ export function GeneralForm({ onSubmit }: GeneralFormProps) {
       password: "",
       description: "",
       country: "",
+      province: "",
+      district: "",
+      ward: "",
       city: "",
+      address: "",
       categories: [],
       amount: 0,
       fromDate: new Date(),
@@ -61,14 +75,6 @@ export function GeneralForm({ onSubmit }: GeneralFormProps) {
     },
     resolver: zodResolver(schema),
   });
-
-  const watchCity = watch("city");
-
-  useEffect(() => {
-    if (watchCity === "RM") {
-      setValue("amount", 100000);
-    }
-  }, [watchCity]);
 
   const handleFormSubmit = async (payload: GeneralPayload) => {
     await onSubmit?.(payload);
@@ -122,17 +128,52 @@ export function GeneralForm({ onSubmit }: GeneralFormProps) {
         cols={30}
       />
 
-      <DropdownField
-        name="city"
-        label="City"
-        placeholder="Select a city"
-        control={control}
-        options={CITY_OPTION_LIST}
-        optionLabel="label"
-        rootClassName="mb-2"
-        highlightOnSelect={false}
-        showClear
-      />
+      <div className="grid grid-cols-4 gap-4 mb-2">
+        <DropdownField
+          name="country"
+          label="Country"
+          placeholder="Select a country"
+          control={control}
+          options={[]}
+          optionLabel="label"
+          highlightOnSelect={false}
+          showClear
+        />
+
+        <DropdownField
+          name="province"
+          label="Province"
+          placeholder="Select a province"
+          control={control}
+          options={provinceOptions}
+          optionLabel="label"
+          highlightOnSelect={false}
+          showClear
+          filter
+        />
+
+        <DropdownField
+          name="district"
+          label="District"
+          placeholder="Select a district"
+          control={control}
+          options={[]}
+          optionLabel="label"
+          highlightOnSelect={false}
+          showClear
+        />
+
+        <DropdownField
+          name="ward"
+          label="Ward"
+          placeholder="Select a ward"
+          control={control}
+          options={[]}
+          optionLabel="label"
+          highlightOnSelect={false}
+          showClear
+        />
+      </div>
 
       <RadioGroupField
         name="gender"
