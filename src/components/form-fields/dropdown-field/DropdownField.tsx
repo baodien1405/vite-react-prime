@@ -18,6 +18,7 @@ export function DropdownField<T extends FieldValues>({
   rootClassName,
   dropdownClassName,
   disabled,
+  onChange: externalOnChange,
   ...rest
 }: DropdownFieldProps<T>) {
   const {
@@ -39,7 +40,10 @@ export function DropdownField<T extends FieldValues>({
       <Dropdown
         value={value}
         ref={ref}
-        onChange={onChange}
+        onChange={(e) => {
+          onChange(e);
+          externalOnChange?.(e);
+        }}
         onBlur={onBlur}
         className={classNames("w-full h-12 shadow-none", dropdownClassName)}
         invalid={invalid}

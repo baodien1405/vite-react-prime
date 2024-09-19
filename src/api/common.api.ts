@@ -1,10 +1,10 @@
-import { Province } from "@/model";
+import { District, Province, Ward } from "@/model";
 import axiosClient from "./axios-client";
 
 export const commonApi = {
   getCountryList() {
-    return axiosClient.get("/api-tinhthanh/1/0.htm", {
-      baseURL: "https://esgoo.net",
+    return axiosClient.get("/v3.1/all", {
+      baseURL: "https://restcountries.com",
     });
   },
 
@@ -18,14 +18,20 @@ export const commonApi = {
   },
 
   getDistrictList(idProvince: string) {
-    return axiosClient.get(`/api-tinhthanh/2/${idProvince}.htm`, {
-      baseURL: "https://esgoo.net",
-    });
+    return axiosClient.get<{ data: Array<District> }>(
+      `/api-tinhthanh/2/${idProvince}.htm`,
+      {
+        baseURL: "https://esgoo.net",
+      }
+    );
   },
 
   getWardList(idDistrict: string) {
-    return axiosClient.get(`/api-tinhthanh/3/${idDistrict}.htm`, {
-      baseURL: "https://esgoo.net",
-    });
+    return axiosClient.get<{ data: Array<Ward> }>(
+      `/api-tinhthanh/3/${idDistrict}.htm`,
+      {
+        baseURL: "https://esgoo.net",
+      }
+    );
   },
 };
