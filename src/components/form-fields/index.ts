@@ -8,3 +8,4 @@ export * from "./input-textarea-field";
 export * from "./date-picker-field";
 export * from "./password-field";
 export * from "./input-switch-field";
+export * from "./upload-field";
