@@ -106,9 +106,6 @@ export function UploadField({
       <FileUpload
         ref={fileUploadRef}
         name={name}
-        url="/api/upload"
-        accept="image/*"
-        maxFileSize={1000000}
         onUpload={handleUpload}
         onSelect={handleSelect}
         headerTemplate={<div className="hidden"></div>}
