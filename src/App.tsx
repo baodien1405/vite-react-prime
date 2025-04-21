@@ -4,6 +4,7 @@ import Login from "@/pages/login";
 import Dashboard from "@/pages/dashboard";
 import Home from "@/pages/home";
 import { Header } from "@/components/header";
+import { FormikForm, RHFForm, TanstackForm } from "@/pages/home/components";
 
 function App() {
   return (
@@ -13,6 +14,9 @@ function App() {
         <Route index element={<Home />} />
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/formik" element={<FormikForm />} />
+        <Route path="/react-hook-form" element={<RHFForm />} />
+        <Route path="/tanstack-form" element={<TanstackForm />} />
       </Routes>
     </div>
   );

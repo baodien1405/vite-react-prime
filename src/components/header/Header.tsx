@@ -52,9 +52,9 @@ export function Header() {
               "bg-red-600 text-white": isActive,
             })
           }
-          to={"/"}
+          to={"/formik"}
         >
-          Home
+          Formik
         </NavLink>
 
         <NavLink
@@ -63,9 +63,9 @@ export function Header() {
               "bg-red-600 text-white": isActive,
             })
           }
-          to={"/admin/login"}
+          to={"/react-hook-form"}
         >
-          Login
+          React Hook Form
         </NavLink>
 
         <NavLink
@@ -74,17 +74,10 @@ export function Header() {
               "bg-red-600 text-white": isActive,
             })
           }
-          to={"/admin/dashboard"}
+          to="/tanstack-form"
         >
-          Dashboard
+          Tanstack Form
         </NavLink>
-
-        <div
-          className="bg-red-200 p-2 rounded-md cursor-pointer"
-          onClick={handleLogout}
-        >
-          Logout
-        </div>
       </div>
 
       <div
