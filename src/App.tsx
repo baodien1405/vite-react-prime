@@ -1,8 +1,8 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import Login from "@/pages/login";
 import Dashboard from "@/pages/dashboard";
-import Home from "@/pages/home";
+
 import { Header } from "@/components/header";
 import { FormikForm, RHFForm, TanstackForm } from "@/pages/home/components";
 
@@ -11,7 +11,7 @@ function App() {
     <div>
       <Header />
       <Routes>
-        <Route index element={<Home />} />
+        <Route index element={<Navigate to="/formik" />} />
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/formik" element={<FormikForm />} />

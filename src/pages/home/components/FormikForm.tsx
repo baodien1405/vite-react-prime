@@ -1,4 +1,3 @@
-import { useFormik } from "formik";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Checkbox } from "primereact/checkbox";
@@ -8,20 +7,12 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { MultiSelect } from "primereact/multiselect";
 import { RadioButton } from "primereact/radiobutton";
-import * as yup from "yup";
-
-interface AccountFormValues {
-  fullName: string;
-  gender: string;
-  dateOfBirth: Date | null;
-  jobs: string[];
-  category: string;
-  methods: string[];
-  enable: boolean;
-  description: string;
-}
+import { useFormik } from "formik";
+import { AccountFormValues } from "@/model";
+import { useAccountSchema } from "@/pages/home/hooks";
 
 export function FormikForm() {
+  const schema = useAccountSchema();
   const formik = useFormik<AccountFormValues>({
     initialValues: {
       fullName: "",
@@ -33,16 +24,7 @@ export function FormikForm() {
       enable: false,
       description: "",
     },
-    validationSchema: yup.object({
-      fullName: yup.string().required(),
-      gender: yup.string().required(),
-      dateOfBirth: yup.date().required(),
-      jobs: yup.array().min(1, "At least one job is required"),
-      category: yup.string().required(),
-      methods: yup.array().min(1, "At least one method is required"),
-      enable: yup.boolean().required(),
-      description: yup.string().required(),
-    }),
+    validationSchema: schema,
     validateOnChange: false,
     onSubmit: (values) => console.log(values),
   });
@@ -51,7 +33,6 @@ export function FormikForm() {
     <form onSubmit={formik.handleSubmit} className="p-4">
       <h1 className="text-2xl text-center mb-4">Formik - Form</h1>
 
-      {/* <div>{JSON.stringify(formik.errors)}</div> */}
       <div className="grid grid-cols-4 gap-4">
         <div className="space-y-1">
           <label className="block mb-1">Fullname</label>

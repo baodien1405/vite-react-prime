@@ -1,3 +1,4 @@
+import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
@@ -7,19 +8,12 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { MultiSelect } from "primereact/multiselect";
 import { RadioButton } from "primereact/radiobutton";
 import { Controller, useForm } from "react-hook-form";
-
-interface AccountFormValues {
-  fullName: string;
-  gender: string;
-  dateOfBirth: Date | null;
-  jobs: string[];
-  category: string;
-  methods: string[];
-  enable: boolean;
-  description: string;
-}
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useAccountSchema } from "@/pages/home/hooks";
+import { AccountFormValues } from "@/model";
 
 export function RHFForm() {
+  const schema = useAccountSchema();
   const form = useForm<AccountFormValues>({
     defaultValues: {
       fullName: "",
@@ -31,6 +25,7 @@ export function RHFForm() {
       enable: false,
       description: "",
     },
+    resolver: yupResolver(schema),
   });
 
   return (
@@ -151,6 +146,7 @@ export function RHFForm() {
                     checked={field.value === option.value}
                     invalid={fieldState.invalid}
                     {...field}
+                    value={option.value}
                   />
                   <label htmlFor={option.value} className="block ml-2">
                     {option.name}
@@ -182,6 +178,13 @@ export function RHFForm() {
                     checked={field.value.includes(option.value)}
                     invalid={fieldState.invalid}
                     {...field}
+                    value={option.value}
+                    onChange={(e) => {
+                      const value = e.checked
+                        ? [...field.value, option.value]
+                        : field.value.filter((v) => v !== option.value);
+                      field.onChange(value);
+                    }}
                   />
                   <label htmlFor={option.value} className="block ml-2">
                     {option.name}
@@ -221,14 +224,12 @@ export function RHFForm() {
             <div className="space-y-1">
               <label className="block mb-1">Description</label>
               <InputTextarea
-                name="description"
                 placeholder="Description"
                 rows={5}
                 cols={30}
                 className="w-full"
                 invalid={fieldState.invalid}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
+                {...field}
               />
               {!!fieldState.error?.message && (
                 <small className="p-error">{fieldState.error?.message}</small>
@@ -237,9 +238,10 @@ export function RHFForm() {
           )}
         />
       </div>
-      <button type="submit" className="mt-6 p-2 bg-blue-500 text-white rounded">
+
+      <Button type="submit" className="mt-4">
         Submit
-      </button>
+      </Button>
     </form>
   );
 }

@@ -16,7 +16,7 @@
   /* override CSS highlight for Dropdown and Calendar */
   .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
   .p-datepicker table td > span.p-highlight {
-    @apply bg-[#14b8a63d];
+    @apply bg-blue-500;
   }
 
   .p-radiobutton.p-highlight .p-radiobutton-box {
@@ -24,7 +24,7 @@
   }
 
   .p-radiobutton .p-radiobutton-box .p-radiobutton-icon {
-    @apply bg-[#14b8a6];
+    @apply bg-blue-500;
   }
 }
 
